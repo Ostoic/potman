@@ -18,17 +18,17 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - name: Install nightly toolchain
-        uses: actions-rs/toolchain@v1
-
-      - name: Run cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --no-default-features --features=${{ matrix.features }}
+      # - name: Install toolchain
+      #   uses: actions-rs/toolchain@v1
 
       - name: Run cargo clippy
         uses: actions-rs/cargo@v1
         with:
           command: clippy
+          args: --no-default-features --features=${{ matrix.features }}
+
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
           args: --no-default-features --features=${{ matrix.features }}
