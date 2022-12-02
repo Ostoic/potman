@@ -1,6 +1,6 @@
 #![deny(elided_lifetimes_in_paths)]
+
 use clap::Parser;
-use potman::potfile::{HcPassword, HcSecret};
 use std::{fs, path::PathBuf};
 
 #[derive(Parser)]

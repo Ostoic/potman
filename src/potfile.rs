@@ -2,11 +2,6 @@ use multimap::MultiMap;
 
 use crate::handshake::{Hc22000, HcEssid, LegacyHandshake};
 
-// use std::collections::HashMap;
-#[cfg(feature = "std")]
-use std::fmt;
-
-#[cfg(not(feature = "std"))]
 use core::fmt;
 
 pub trait PotfileLookup {}
