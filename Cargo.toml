@@ -3,6 +3,18 @@ name = "potman"
 version = "0.0.1"
 edition = "2021"
 
+[profile.release]
+# panic = "abort"
+opt-level = "s"
+codegen-units = 1
+lto = true
+debug = false
+strip = "symbols"
+
+[[bin]]
+name = "potman"
+required-features = ["std", "clap", "anyhow"]
+
 [features]
 default = ["std"]
 std = ["alloc", "serde/std", "macaddr/serde_std"]
@@ -13,8 +25,15 @@ multimap = "0.8"
 macaddr = "1"
 hex = "0.4"
 nom = "7"
-clap = { version = "4", features = ["derive"] }
-anyhow = "1"
+
+[dependencies.clap]
+version = "4"
+features = ["derive"]
+optional = true
+
+[dependencies.anyhow]
+version = "1"
+optional = true
 
 [dependencies.serde_plain]
 version = "1"

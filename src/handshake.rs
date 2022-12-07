@@ -8,11 +8,8 @@ use nom::{
     IResult,
 };
 
-#[cfg(feature = "std")]
-use std::str::FromStr;
-
-// #[cfg(not(feature = "std"))]
 use core::fmt;
+use core::str::FromStr;
 
 #[derive(Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -184,7 +181,8 @@ pub mod parsers {
         Ok((o, (kind)))
     }
 
-    pub fn hex_essid(i: &str) -> IResult<&str, String> {
+    #[cfg(feature = "alloc")]
+    pub fn hexed_essid(i: &str) -> IResult<&str, String> {
         use nom::{
             error::{Error, ErrorKind},
             Err,
@@ -205,9 +203,9 @@ pub mod parsers {
             tuple((
                 delimited(terminated(tag("WPA"), tag("*")), hc22000_kind, tag("*")),
                 terminated(handshake_id, tag("*")),
-                terminated(macaddr6, tag("*")),  // ap mac
-                terminated(macaddr6, tag("*")),  // client_mac mac
-                terminated(hex_essid, tag("*")), // essid
+                terminated(macaddr6, tag("*")),    // ap mac
+                terminated(macaddr6, tag("*")),    // client_mac mac
+                terminated(hexed_essid, tag("*")), // essid
                 terminated(complete(opt(hex_digit1)), tag("*")),
                 terminated(complete(opt(hex_digit1)), tag("*")),
                 complete(opt(hex_digit0)),
@@ -355,7 +353,7 @@ fn test_hc22000() -> anyhow::Result<()> {
 
 pub use parsers::hc22000_handshake as parse_hc22000;
 
-use self::parsers::hex_essid;
+use self::parsers::hexed_essid;
 
 #[inline]
 pub fn plaintext_essid_parser(input: &str) -> IResult<&str, String> {
@@ -394,7 +392,7 @@ pub fn legacy_handshake_parser(input: &str) -> IResult<&str, LegacyHandshake> {
             terminated(complete(opt(parsers::macaddr6)), tag(":")),
             terminated(complete(opt(parsers::macaddr6)), tag(":")),
         )),
-        alt((hex_essid, plaintext_essid_parser)),
+        alt((hexed_essid, plaintext_essid_parser)),
     )(input)?;
 
     Ok((o, LegacyHandshake::new(essid)))

@@ -4,21 +4,19 @@ use crate::handshake::{Hc22000, HcEssid, LegacyHandshake};
 
 use core::fmt;
 
-pub trait PotfileLookup {}
-
 #[derive(Debug, Eq, PartialEq, Clone)]
 pub struct Potfile<'a> {
     pub entries: MultiMap<String, HcEntry<'a>>,
 }
 
 impl<'a> Potfile<'a> {
-    // TODO: Handle duplicate handshakes and duplicate entries (potentially different bssids)
     #[inline]
     pub fn lookup_secret(&self, essid: &str) -> Option<HcPassword> {
-        self.entries.get(essid).map(HcSecret::secret)
+        self.entries
+            .get(essid)
+            .map(HcSecret::secret)
     }
 
-    #[inline]
     pub fn lookup_secrets(&self, essid: &str) -> Option<impl Iterator<Item = HcPassword>> {
         self.entries
             .get_vec(essid)
