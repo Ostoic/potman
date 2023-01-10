@@ -1,7 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # potman
-potman (Potfile Manager) is a small tool/lib I wrote for working with Hashcat potfiles. It currently supports basic lookup (essid, password) and dump (essid, password, all, etc) operations. I used this project as a way to understand how to use nom better, seeing as most of this could be done in a simple bash script.
+potman (Potfile Manager) is a small tool/lib I wrote for working with Hashcat potfiles. It currently supports basic lookup (essid, password) and dump (essid, password, all, etc) operations. I used this project as a way to understand how to use nom better, seeing as most of this could be done in a bash script.
 
 # Example
 potman help
